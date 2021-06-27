@@ -3,16 +3,13 @@ RUN curl https://binaries.cockroachdb.com/cockroach-v21.1.3.src.tgz | tar -xz
 RUN make build
 RUN make install
 
-FROM registry.access.redhat.com/ubi8/ubi-minimal
+FROM ubuntu:21.04
 # For deployment, we need the following additionally installed:
 # tzdata - for time zone functions; reinstalled to replace the missing
 #          files in /usr/share/zoneinfo/
 # hostname - used in cockroach k8s manifests
 # tar - used by kubectl cp
-RUN microdnf update -y \
-    && rpm --erase --nodeps tzdata \
-    && microdnf install tzdata hostname tar -y \
-    && rm -rf /var/cache/yum
+RUN apt-get update && apt-get install -y tzdata hostname tar && rm -rf /var/lib/apt/lists/*
 RUN mkdir /usr/local/lib/cockroach /cockroach /licenses
 COPY cockroach.sh /cockroach/
 COPY --from=0  /usr/local/bin/cockroach /cockroach/
@@ -25,6 +22,6 @@ WORKDIR /cockroach/
 # Include the directory in the path to make it easier to invoke
 # commands via Docker
 ENV PATH=/cockroach:$PATH
-ENV COCKROACH_CHANNEL=official-docker
+ENV COCKROACH_CHANNEL=unofficial-docker
 EXPOSE 26257 8080
 ENTRYPOINT ["/cockroach/cockroach.sh"]
