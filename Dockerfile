@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y tzdata hostname tar && rm -rf /var/lib/
 RUN mkdir /usr/local/lib/cockroach /cockroach /licenses
 COPY cockroach.sh /cockroach/
 COPY --from=0  /usr/local/bin/cockroach /cockroach/
-COPY licenses/* /licenses/
+#COPY licenses/* /licenses/
 # Install GEOS libraries.
 #COPY libgeos.so libgeos_c.so /usr/local/lib/cockroach/
 # Set working directory so that relative paths
