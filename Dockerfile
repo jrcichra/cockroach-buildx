@@ -1,4 +1,5 @@
 FROM golang:1.16.5-buster
+RUN apt-get update && apt-get install -y autoconf cmake && rm -rf /var/lib/apt/lists/*
 RUN curl https://binaries.cockroachdb.com/cockroach-v21.1.3.src.tgz | tar -xz 
 RUN bash -c 'cd cockroach* && make build && make install'
 
