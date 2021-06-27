@@ -15,7 +15,7 @@ COPY cockroach.sh /cockroach/
 COPY --from=0  /usr/local/bin/cockroach /cockroach/
 COPY licenses/* /licenses/
 # Install GEOS libraries.
-COPY libgeos.so libgeos_c.so /usr/local/lib/cockroach/
+#COPY libgeos.so libgeos_c.so /usr/local/lib/cockroach/
 # Set working directory so that relative paths
 # are resolved appropriately when passed as args.
 WORKDIR /cockroach/
