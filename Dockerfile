@@ -1,6 +1,6 @@
 FROM golang:1.16.5-buster
 RUN curl https://binaries.cockroachdb.com/cockroach-v21.1.3.src.tgz | tar -xz 
-RUN bash -c 'cd cockroach && make build && make install'
+RUN bash -c 'cd cockroach* && make build && make install'
 
 FROM ubuntu:21.04
 # For deployment, we need the following additionally installed:
