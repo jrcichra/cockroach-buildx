@@ -1,6 +1,6 @@
-FROM golang:1.16.7-buster
+FROM golang:1.17-buster
 RUN apt-get update && apt-get install -y autoconf cmake libncurses-dev bison && rm -rf /var/lib/apt/lists/*
-RUN curl https://binaries.cockroachdb.com/cockroach-v21.1.7.src.tgz | tar -xz 
+RUN curl https://binaries.cockroachdb.com/cockroach-v21.1.8.src.tgz | tar -xz 
 RUN bash -c 'cd cockroach* && make build && make install'
 
 FROM ubuntu:21.04
