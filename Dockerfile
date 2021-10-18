@@ -3,7 +3,7 @@ RUN apt-get update && apt-get install -y autoconf cmake libncurses-dev bison && 
 RUN curl https://binaries.cockroachdb.com/cockroach-v21.1.11.src.tgz | tar -xz 
 RUN bash -c 'cd cockroach* && make build && make install'
 
-FROM ubuntu:21.04
+FROM ubuntu:21.10
 # For deployment, we need the following additionally installed:
 # tzdata - for time zone functions; reinstalled to replace the missing
 #          files in /usr/share/zoneinfo/
