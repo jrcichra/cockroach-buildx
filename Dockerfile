@@ -1,6 +1,6 @@
 FROM golang:1.17.3-bullseye
 RUN apt-get update && apt-get install -y autoconf cmake libncurses-dev bison && rm -rf /var/lib/apt/lists/*
-RUN curl https://binaries.cockroachdb.com/cockroach-v21.2.0.src.tgz | tar -xz 
+RUN curl https://binaries.cockroachdb.com/cockroach-v21.2.2.src.tgz | tar -xz 
 RUN bash -c 'cd cockroach* && make build && make install'
 
 FROM ubuntu:21.10
