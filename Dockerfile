@@ -1,6 +1,6 @@
 FROM golang:1.16.11-buster
 RUN apt-get update && apt-get install -y autoconf cmake libncurses-dev bison ccache git && rm -rf /var/lib/apt/lists/*
-RUN git clone -b v21.2.2 –depth 1 https://github.com/cockroachdb/cockroach.git
+RUN git clone --depth 1 --branch v21.2.2 https://github.com/cockroachdb/cockroach.git
 RUN bash -c 'cd cockroach* && make build && make install'
 
 FROM debian:buster
