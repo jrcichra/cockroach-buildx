@@ -21,6 +21,6 @@ WORKDIR /cockroach/
 ENV PATH=/cockroach:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 RUN mkdir -p /cockroach/ /usr/local/lib/cockroach /licenses
 COPY --from=build /usr/local/bin/cockroach /cockroach/cockroach
-COPY --from=build /go/native/aarch64-linux-gnu/geos/lib/libgeos.so /go/native/aarch64-linux-gnu/geos/lib/libgeos_c.so /usr/local/lib/cockroach/
+COPY --from=build /go/native/*-linux-gnu/geos/lib/libgeos.so /go/native/*-linux-gnu/geos/lib/libgeos_c.so /usr/local/lib/cockroach/
 EXPOSE 26257 8080
 ENTRYPOINT ["/cockroach/cockroach"]
