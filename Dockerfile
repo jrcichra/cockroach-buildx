@@ -1,27 +1,23 @@
-FROM golang:1.16.11-buster
-RUN apt-get update && apt-get install -y autoconf cmake libncurses-dev bison ccache git && rm -rf /var/lib/apt/lists/*
-RUN git clone --depth 1 --branch v21.2.2 https://github.com/cockroachdb/cockroach.git
-RUN bash -c 'cd cockroach* && make build && make install'
+FROM golang:1.17.5-bullseye as prebuild
+RUN go version
+RUN apt-get update
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get -y update
+RUN apt-get -y install build-essential gcc g++ cmake autoconf wget bison libncurses-dev ccache curl git libgeos-dev tzdata apt-transport-https lsb-release ca-certificates
 
-FROM debian:buster
-# For deployment, we need the following additionally installed:
-# tzdata - for time zone functions; reinstalled to replace the missing
-#          files in /usr/share/zoneinfo/
-# hostname - used in cockroach k8s manifests
-# tar - used by kubectl cp
-RUN apt-get update && apt-get install -y tzdata hostname tar && rm -rf /var/lib/apt/lists/*
-RUN mkdir /usr/local/lib/cockroach /cockroach /licenses
-COPY cockroach.sh /cockroach/
-COPY --from=0  /usr/local/bin/cockroach /cockroach/
-#COPY licenses/* /licenses/
-# Install GEOS libraries.
-#COPY libgeos.so libgeos_c.so /usr/local/lib/cockroach/
-# Set working directory so that relative paths
-# are resolved appropriately when passed as args.
+FROM prebuild as build
+RUN /bin/bash -c "mkdir -p $(go env GOPATH)/src/github.com/cockroachdb && cd $(go env GOPATH)/src/github.com/cockroachdb"
+WORKDIR /go/src/github.com/cockroachdb
+RUN /bin/bash -c "git clone --branch v21.2.2 https://github.com/cockroachdb/cockroach"
+WORKDIR /go/src/github.com/cockroachdb/cockroach
+RUN /bin/bash -c "git submodule update --init --recursive && make build && make install"
+
+FROM debian:bullseye
+RUN apt-get update && apt-get -y upgrade && apt-get install -y libc6 ca-certificates tzdata hostname tar && rm -rf /var/lib/apt/lists/*
 WORKDIR /cockroach/
-# Include the directory in the path to make it easier to invoke
-# commands via Docker
-ENV PATH=/cockroach:$PATH
-ENV COCKROACH_CHANNEL=unofficial-docker
+ENV PATH=/cockroach:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+RUN mkdir -p /cockroach/ /usr/local/lib/cockroach /licenses
+COPY --from=build /usr/local/bin/cockroach /cockroach/cockroach
+COPY --from=build /go/native/aarch64-linux-gnu/geos/lib/libgeos.so /go/native/aarch64-linux-gnu/geos/lib/libgeos_c.so /usr/local/lib/cockroach/
 EXPOSE 26257 8080
-ENTRYPOINT ["/cockroach/cockroach.sh"]
+ENTRYPOINT ["/cockroach/cockroach"]
