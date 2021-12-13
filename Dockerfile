@@ -2,7 +2,11 @@ FROM golang:1.17.5-bullseye as prebuild
 RUN go version
 RUN apt-get update
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get -y install build-essential gcc g++ cmake autoconf wget bison libncurses-dev ccache curl git libgeos-dev tzdata apt-transport-https lsb-release ca-certificates
+RUN ["/bin/bash", "-c", "curl -sL https://deb.nodesource.com/setup_12.x | bash -"]
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+RUN apt-get update
+RUN apt-get -y install build-essential gcc g++ cmake autoconf wget bison libncurses-dev ccache curl git libgeos-dev tzdata apt-transport-https lsb-release ca-certificates yarn nodejs
 
 FROM prebuild as build
 RUN /bin/bash -c "mkdir -p $(go env GOPATH)/src/github.com/cockroachdb && cd $(go env GOPATH)/src/github.com/cockroachdb"
