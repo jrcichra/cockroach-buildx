@@ -2,7 +2,6 @@ FROM golang:1.17.5-bullseye as prebuild
 RUN go version
 RUN apt-get update
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get -y update
 RUN apt-get -y install build-essential gcc g++ cmake autoconf wget bison libncurses-dev ccache curl git libgeos-dev tzdata apt-transport-https lsb-release ca-certificates
 
 FROM prebuild as build
