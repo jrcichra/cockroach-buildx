@@ -24,3 +24,4 @@ COPY --from=build /usr/local/bin/cockroach /cockroach/cockroach
 COPY --from=build /go/native/*-linux-gnu/geos/lib/libgeos.so /go/native/*-linux-gnu/geos/lib/libgeos_c.so /usr/local/lib/cockroach/
 EXPOSE 26257 8080
 ENTRYPOINT ["/cockroach/cockroach"]
+
