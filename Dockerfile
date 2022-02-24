@@ -1,4 +1,4 @@
-FROM golang:1.17.6-bullseye as prebuild
+FROM golang:1.17.7-bullseye as prebuild
 RUN go version
 RUN apt-get update
 ENV DEBIAN_FRONTEND=noninteractive
@@ -11,7 +11,7 @@ RUN apt-get -y install build-essential gcc g++ cmake autoconf wget bison libncur
 FROM prebuild as build
 RUN /bin/bash -c "mkdir -p $(go env GOPATH)/src/github.com/cockroachdb && cd $(go env GOPATH)/src/github.com/cockroachdb"
 WORKDIR /go/src/github.com/cockroachdb
-RUN /bin/bash -c "git clone --branch v21.2.5 https://github.com/cockroachdb/cockroach"
+RUN /bin/bash -c "git clone --branch v21.2.6 https://github.com/cockroachdb/cockroach"
 WORKDIR /go/src/github.com/cockroachdb/cockroach
 RUN /bin/bash -c "git submodule update --init --recursive && make build && make install"
 
