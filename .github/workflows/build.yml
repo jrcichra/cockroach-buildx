@@ -26,10 +26,10 @@ jobs:
         id: dispatch
         uses: jrcichra/kaniko-dispatcher@main
         with:
-          name: cockroach-multiarch
+          name: cockroachdb-multiarch
           url: https://kaniko.jrcichra.dev
-          context: "git://github.com/jrcichra/cockroach-multiarch#${{ github.sha }}"
-          destination: "ghcr.io/jrcichra/cockroach-multiarch:sha-${{ steps.vars.outputs.sha_short }}-amd64"
+          context: "git://github.com/jrcichra/cockroachdb-multiarch#${{ github.sha }}"
+          destination: "ghcr.io/jrcichra/cockroachdb-multiarch:sha-${{ steps.vars.outputs.sha_short }}-amd64"
           secret: justin-ghcr-io
           arch: amd64
           headers: |
@@ -57,10 +57,10 @@ jobs:
         id: dispatch
         uses: jrcichra/kaniko-dispatcher@main
         with:
-          name: cockroach-multiarch
+          name: cockroachdb-multiarch
           url: https://kaniko.jrcichra.dev
-          context: "git://github.com/jrcichra/cockroach-multiarch#${{ github.sha }}"
-          destination: "ghcr.io/jrcichra/cockroach-multiarch:sha-${{ steps.vars.outputs.sha_short }}-arm64"
+          context: "git://github.com/jrcichra/cockroachdb-multiarch#${{ github.sha }}"
+          destination: "ghcr.io/jrcichra/cockroachdb-multiarch:sha-${{ steps.vars.outputs.sha_short }}-arm64"
           secret: justin-ghcr-io
           arch: arm64
           headers: |
