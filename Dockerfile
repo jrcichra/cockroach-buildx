@@ -11,9 +11,9 @@ RUN apt-get -y install build-essential gcc g++ cmake autoconf wget bison libncur
 FROM prebuild as build
 RUN /bin/bash -c "mkdir -p $(go env GOPATH)/src/github.com/cockroachdb && cd $(go env GOPATH)/src/github.com/cockroachdb"
 WORKDIR /go/src/github.com/cockroachdb
-RUN /bin/bash -c "git clone --depth=1 --branch v22.1.0 https://github.com/cockroachdb/cockroach"
+RUN /bin/bash -c "git clone --recursive --depth=1 --branch v22.1.0 https://github.com/cockroachdb/cockroach"
 WORKDIR /go/src/github.com/cockroachdb/cockroach
-RUN /bin/bash -c "git submodule update --init --recursive && make build && make install"
+RUN /bin/bash -c "make build && make install"
 
 FROM debian:bullseye
 RUN apt-get update && apt-get -y upgrade && apt-get install -y libc6 ca-certificates tzdata hostname tar && rm -rf /var/lib/apt/lists/*
