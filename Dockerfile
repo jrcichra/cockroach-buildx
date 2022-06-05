@@ -1,4 +1,4 @@
-FROM golang:1.17.10-bullseye as prebuild
+FROM golang:1.17.11-bullseye as prebuild
 RUN go version
 RUN apt-get update
 ENV DEBIAN_FRONTEND=noninteractive
