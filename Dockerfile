@@ -11,7 +11,7 @@ RUN apt-get -y install build-essential gcc g++ cmake autoconf wget bison libncur
 FROM prebuild as build
 RUN /bin/bash -c "mkdir -p $(go env GOPATH)/src/github.com/cockroachdb && cd $(go env GOPATH)/src/github.com/cockroachdb"
 WORKDIR /go/src/github.com/cockroachdb
-RUN /bin/bash -c "git clone --recursive --depth=1 --branch v22.1.1 https://github.com/cockroachdb/cockroach"
+RUN /bin/bash -c "git clone --recursive --depth=1 --branch v22.1.2 https://github.com/cockroachdb/cockroach"
 WORKDIR /go/src/github.com/cockroachdb/cockroach
 RUN /bin/bash -c "NODE_OPTIONS=--max-old-space-size=4096 make build && make install"
 
