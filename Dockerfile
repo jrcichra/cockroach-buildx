@@ -1,4 +1,5 @@
 FROM golang:latest as prebuild
+ARG TARGETARCH
 RUN go version
 RUN apt-get update
 ENV DEBIAN_FRONTEND=noninteractive
